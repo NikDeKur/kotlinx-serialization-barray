@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "dev.nikdekur"
-version = "1.0.0"
+version = "1.1.0"
 
 val authorId: String by project
 val authorName: String by project

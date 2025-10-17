@@ -43,5 +43,6 @@ bin/
 build/
 **/build/*
 !**/build/generated/
+
 # Project exclude paths
 /deprecated/
