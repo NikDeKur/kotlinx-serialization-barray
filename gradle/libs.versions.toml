@@ -1,0 +1,14 @@
+[versions]
+kotlin = "2.2.20"
+kotlinx-serialization = "1.9.0"
+kotlinx-io = "0.8.0"
+ndkore = "1.6.1"
+
+[libraries]
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
+ndkore = { module = "dev.nikdekur:ndkore", version.ref = "ndkore" }
+
+[plugins]
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
