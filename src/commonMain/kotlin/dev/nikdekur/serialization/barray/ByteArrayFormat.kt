@@ -1,6 +1,7 @@
 package dev.nikdekur.serialization.barray
 
-import dev.nikdekur.serialization.byte.BufferByteStorage
+import dev.nikdekur.serialization.byte.ByteStorage
+import dev.nikdekur.serialization.byte.KotlinXioBufferByteStorage
 import kotlinx.serialization.BinaryFormat
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.SerializationStrategy
@@ -30,14 +31,15 @@ import kotlinx.serialization.modules.SerializersModule
  * @param serializersModule The module that contains serializers for the data you want to encode and decode.
  */
 public open class ByteArrayFormat(
-    override val serializersModule: SerializersModule = SerializersModule {  }
+    override val serializersModule: SerializersModule = SerializersModule {  },
+    public val bufferBuilder: () -> ByteStorage = { KotlinXioBufferByteStorage() }
 ) : BinaryFormat {
 
     override fun <T> encodeToByteArray(
         serializer: SerializationStrategy<T>,
         value: T
     ): ByteArray {
-        val buffer = BufferByteStorage()
+        val buffer = bufferBuilder()
         val encoder = DataOutputEncoder(serializersModule, buffer)
         serializer.serialize(encoder, value)
         return buffer.toByteArray()
@@ -47,9 +49,8 @@ public open class ByteArrayFormat(
         deserializer: DeserializationStrategy<T>,
         bytes: ByteArray
     ): T {
-        val buffer = BufferByteStorage().also {
-            it.writeBytes(bytes)
-        }
+        val buffer = bufferBuilder()
+        buffer.writeBytes(bytes)
         val decoder = DataInputDecoder(serializersModule, buffer)
         return deserializer.deserialize(decoder)
     }

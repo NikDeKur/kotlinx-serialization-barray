@@ -5,13 +5,15 @@ import kotlinx.serialization.builtins.*
 import kotlinx.serialization.modules.SerializersModule
 import kotlin.test.*
 
-class ByteArrayFormatTest {
+abstract class ByteArrayFormatTest {
 
     private lateinit var format: ByteArrayFormat
 
+    abstract fun buildFormat(): ByteArrayFormat
+
     @BeforeTest
     fun setup() {
-        format = ByteArrayFormat()
+        format = buildFormat()
     }
 
     // ==================== Primitive Types Tests ====================
@@ -224,6 +226,19 @@ class ByteArrayFormatTest {
         val encoded = format.encodeToByteArray(String.serializer(), original)
         val decoded = format.decodeFromByteArray(String.serializer(), encoded)
         assertEquals(original, decoded)
+    }
+
+    @Serializable
+    data class LongString(val content: String)
+
+    @Test
+    fun `test encode and decode long String`() {
+        val original = "The quick brown fox jumps over the lazy dog. ".repeat(200)
+        val data = LongString(original)
+
+        val encoded = format.encodeToByteArray(LongString.serializer(), data)
+        val decoded = format.decodeFromByteArray(LongString.serializer(), encoded)
+        assertEquals(data.content, decoded.content)
     }
 
     @Test

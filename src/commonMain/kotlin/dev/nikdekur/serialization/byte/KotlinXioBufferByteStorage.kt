@@ -4,7 +4,7 @@ import dev.nikdekur.serialization.barray.readStringModern
 import dev.nikdekur.serialization.barray.writeStringModern
 import kotlinx.io.*
 
-public class BufferByteStorage(
+public class KotlinXioBufferByteStorage(
     public val buffer: Buffer = Buffer()
 ) : ByteStorage {
     override val size: Long
